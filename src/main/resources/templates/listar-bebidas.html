@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{clientes.css}">
+    <title>Document</title>
+    <style>
+        button {
+    background-color: #f7e0b6; /* Champagne */
+    color: #000000;            /* Preto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+a{
+    color: #000000;
+    text-decoration: none;
+}
+button:hover {
+    background-color: #f5d9a4; /* Tom um pouco mais escuro de champagne */
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+        .modal {
+    display: none; /* escondido por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: #111;
+    color: #f7e7ce; /* tom champagne */
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(247, 231, 206, 0.3);
+}
+
+.btn-sim {
+    background-color: #f7e7ce;
+    color: #111;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn-nao {
+    background-color: #444;
+    color: #f7e7ce;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="cabe">
+        <h1 class="h1">Bebidas em estoque</h1>
+    </div>
+    <div class="pai">
+        <h2 class="titulo">Tabela de Bebidas</h2>
+
+        <table class="tabela-clientes">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Quantidade em estoque</th>
+                    <th>Imagem</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bebida : ${bebidas}">
+                    <td th:text="${bebida.id}"></td>
+                    <td th:text="${bebida.nome}"></td>
+                    <td th:text="${bebida.categoria}"></td>
+                    <td th:text="${bebida.descricao}"></td>
+                    <td>R$ [[${bebida.preco}]]</td>
+                    <td th:text="${bebida.quantidade}"></td>
+                    <td th:style="'background-image: url(' + @{/bebidaImagem/{id}(id=${bebida.id})} + '); 
+                background-size: cover; 
+                background-position: center; 
+                width: 120px; 
+                height: 120px;'">
+                        <img th:src="@{'/bebidaImagem/' + ${bebida.id}}" alt="imagem da bebida" width="120" height="120" style="display: none;">
+                    </td>
+                    <td>
+                        <button type="submit"><a th:href="@{'/editarBebida/' +${bebida.id}}" class="btn-editar">Editar</a></button>
+                       <!-- Botão que abre o modal -->
+                        <button type="button" class="btn-excluir"
+                                th:attr="data-id=${bebida.id}"
+                                onclick="abrirModal(this)">
+                            Excluir
+                        </button>
+
+                        <!-- Modal de confirmação -->
+                        <div class="modal" th:id="'modal-' + ${bebida.id}">
+                            <div class="modal-content">
+                                <p>Tem certeza que deseja excluir esta bebida?</p>
+                                <form th:action="@{/excluirBebida/{id}(id=${bebida.id})}" method="post">
+                                    <button type="submit" class="btn-sim">Sim</button>
+                                    <button type="button" class="btn-nao" onclick="fecharModal(this)">Não</button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br> <br>
+        <button><a th:href="@{/indexFun}">Voltar</a></button>
+        
+</body>
+<script>
+    function abrirModal(button) {
+        const id = button.getAttribute("data-id");
+        document.getElementById("modal-" + id).style.display = "block";
+    }
+
+    function fecharModal(button) {
+        button.closest(".modal").style.display = "none";
+    }
+</script>
+</html>

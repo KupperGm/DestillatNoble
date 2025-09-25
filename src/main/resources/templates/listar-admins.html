@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmls:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{clientes.css}">
+    <title>Document</title>
+    <style>
+         button {
+    background-color: #f7e0b6; /* Champagne */
+    color: #000000;            /* Preto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+a{
+    color: #000000;
+    text-decoration: none;
+}
+button:hover {
+    background-color: #f5d9a4; /* Tom um pouco mais escuro de champagne */
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+    </style>
+</head>
+<body>
+    <div class="cabe">
+        <h1 class="h1">Admins Cadastrados no Sistema</h1>
+    </div>
+
+    <div class="pai">
+        <h2 class="titulo">Tabela de Admins</h2>
+
+        <table class="tabela-clientes">
+            <thead>
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="admin : ${admins}">
+                    <td th:text="${admin.matricula}"></td>
+                    <td th:text="${admin.nome}"></td>
+                    <td th:text="${admin.email}"></td>
+                    <td>
+                        <button type="submit"><a th:href="@{'/editarAdm/' +${admin.matricula}}" class="btn-editar">Editar</a></button>
+                        <!-- Botão para abrir modal -->
+                        <button type="button" class="btn-excluir" 
+                                th:attr="data-matricula=${admin.matricula}"
+                                onclick="abrirModal(this)">
+                                Desativar
+                        </button>
+
+                        <!-- Modal de confirmação -->
+                        <div class="modal" th:id="'modal-' + ${admin.matricula}">
+                            <div class="modal-content">
+                                <p>Tem certeza que deseja desativar este admin?</p>
+                                <form th:action="@{/desativarAdm/{matricula}(matricula=${admin.matricula})}" th:method="post">
+                                    <button type="submit" class="btn-sim">Sim</button>
+                                    <button type="button" class="btn-nao" 
+                                            onclick="fecharModal(this)">Não</button>
+                                </form>
+                            </div>
+                        </div>    
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br> <br>
+        <button><a th:href="@{/indexAdmin}">Voltar</a></button>
+    </div>
+    <script>
+        function abrirModal(btn) {
+            const id = btn.getAttribute('data-matricula');
+            document.getElementById('modal-' + id).style.display = 'flex';
+        }
+
+        function fecharModal(btn) {
+        // fecha o modal mais próximo do botão clicado
+        const modal = btn.closest('.modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+    </script>
+
+</body>
+</html>

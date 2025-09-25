@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <title>Adega Premium</title>
+     <style>
+    /* Estilos adicionais para o modal */
+    .age-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .age-modal-content {
+      background-color: #1a1a1a;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      color: #fad6a5;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(250, 214, 165, 0.3);
+    }
+
+    .age-modal-content h2 {
+      margin-bottom: 1rem;
+    }
+
+    .age-buttons {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .age-buttons button {
+      background-color: #4CAF50;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #accept-cookies{
+      background-color: #4CAF50;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .age-buttons button.no {
+      background-color: #e60000;
+    }
+    #cookie-modal{
+      display: none;
+    }
+    .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.product-card {
+    background-color: #111;
+    color: #fad6a5;
+    border-radius: 12px;
+    padding: 15px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(250, 214, 165, 0.2);
+    transition: transform 0.3s;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.add-btn {
+    background-color: #fad6a5;
+    color: #111;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-btn:hover {
+    background-color: #e6d5b8;
+}
+
+body {
+  background-color: black;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.section {
+  max-width: 1200px;   /* controla a largura da grade */
+  margin: 40px auto;   /* centraliza horizontalmente */
+  padding: 0 20px;     /* respiro lateral */
+}
+
+.section h2 {
+  color: #fad6a5;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+  gap: 25px; /* espaço entre os cards */
+}
+
+.card {
+  background-color: #111;
+  color: #fad6a5;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0px 2px 8px rgba(250, 214, 165, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* sobe levemente ao passar o mouse */
+}
+
+.card img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.card p {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #ffd27f;
+}
+
+.card button {
+  background-color: #fad6a5;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.card button:hover {
+  background-color: #ffb84d;
+}
+
+h1{
+  text-align: center;   /* centraliza o texto */
+  width: 100%;          /* ocupa toda a largura */
+  display: block;       /* garante que se comporte como bloco */
+  color: #fad6a5;
+  font-size: 32px;
+  margin: 20px 0;
+  text-decoration: dashed inline #fad6a5;
+}
+#modal-c{
+  
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.cabe {
+  display: flex;
+  align-items: center;   /* alinha tudo verticalmente no centro */
+  justify-content: space-between; /* ícones ficam nas pontas */
+  background-color: black;
+  color: #fad6a5;
+  padding: 20px;
+  position: relative; /* necessário caso use o absolute no h1 */
+}
+
+.cabe h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+}
+
+.cabe a img {
+  width: 70px;   /* aumenta o tamanho dos ícones */
+  height: 70px;
+  object-fit: contain; /* garante que não distorçam */
+}
+  </style>
+</head>
+<body>
+          <!-- Modal -->
+          <div class="age-modal" id="ageModal">
+            <div class="age-modal-content">
+              <h2>Você tem mais de 18 anos?</h2>
+              <div class="age-buttons">
+                <button class="yes" onclick="permitAccess()">Sim</button>
+                <button class="no" onclick="denyAccess()">Não</button>
+              </div>
+            </div>
+          </div>
+          <!--Fim de Modal-->
+
+          <!---- Modal --->
+                <div class="age-modal" id="cookie-modal">
+                    <div class="age-modal-content" id="modal-c">
+                      <p>
+                        Este site utiliza cookies para melhorar sua experiência. Ao continuar, você concorda com o uso de cookies
+                      </p>
+                      <button class="yes age-buttons" id="accept-cookies">
+                          Aceitar
+                      </button>
+                    </div>
+                </div>
+           <!--Fim de Modal-->
+<div class="contai">
+        <div class="cabe">
+            <a class="a" th:href="@{/loginform}"><img src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png" alt="imagem" width="40px" height="40px"></a>
+            <h1>Bem vindo ao nosso Site</h1>
+            <a class="a" href="@{/carrinho}"><img src="https://cdn-icons-png.flaticon.com/512/5234/5234583.png" alt="imagem" width="30px" height="30px"></a>
+        </div>
+
+        <div class="pai">
+            <h2 class="titulo">Conheça nossos produtos</h2>
+                    <div class="fileiras">
+           <div class="section">
+              <h1 class="h1">Cachaças</h1>
+               <div class="cachaca">
+                         <div class="categoria">
+                            <ul class="product-list">
+                                <li class="product-card" th:each="bebida : ${bebidas}" th:if="${bebida.categoria.equals('Cachaca')}">
+                                    <a th:href="@{/detalhes/{id}(id=${bebida.id})}"><img th:src="@{/bebidaImagem/{id}(id=${bebida.id})}" th:alt="${bebida.nome}" class="product-img"></a>
+                                    <h3 class="product-title" th:text="${bebida.nome}"></h3>
+                                    <p class="product-pricing">
+                                        <span th:text="'R$ ' + ${#numbers.formatDecimal(bebida.preco, 2, 2)}"></span>
+                                    </p>
+                                    <button class="add-btn" th:onclick="'adicionarCarrinho(' + ${bebida.id} + ')'">Adicionar</button>
+                                </li>
+                            </ul>
+                          </div>
+
+            </div>
+           </div>
+            <div class="section">
+              <h1 class="h1">Whiskys</h1>
+              <div class="whisky">
+                  <div class="categoria">
+                        <ul class="product-list">
+                            <li class="product-card" th:each="bebida : ${bebidas}" th:if="${bebida.categoria.equals('Whisky')}">
+                                <a th:href="@{/detalhes/{id}(id=${bebida.id})}"><img th:src="@{/bebidaImagem/{id}(id=${bebida.id})}" th:alt="${bebida.nome}" class="product-img"></a>
+                                <h3 class="product-title" th:text="${bebida.nome}"></h3>
+                                <p class="product-pricing">
+                                    <span th:text="'R$ ' + ${#numbers.formatDecimal(bebida.preco, 2, 2)}"></span>
+                                </p>
+                                <button class="add-btn" th:onclick="'adicionarCarrinho(' + ${bebida.id} + ')'">Adicionar</button>
+                            </li>
+                        </ul>
+                   </div>
+
+            </div>
+            </div>
+            <div class="section">
+              <h1 class="h1">Vodkas</h1>
+              <div class="vodka">
+                  <div class="categoria">
+                         <ul class="product-list">
+                            <li class="product-card" th:each="bebida : ${bebidas}" th:if="${bebida.categoria.equals('Vodkas')}">
+                                <a th:href="@{/detalhes/{id}(id=${bebida.id})}"><img th:src="@{/bebidaImagem/{id}(id=${bebida.id})}" th:alt="${bebida.nome}" class="product-img"></a>
+                                <h3 class="product-title" th:text="${bebida.nome}"></h3>
+                                <p class="product-pricing">
+                                    <span th:text="'R$ ' + ${#numbers.formatDecimal(bebida.preco, 2, 2)}"></span>
+                                </p>
+                                <button class="add-btn" th:onclick="'adicionarCarrinho(' + ${bebida.id} + ')'">Adicionar</button>
+                            </li>
+                         </ul>
+                  </div>
+            </div>
+            </div>
+        </div>
+        </div>
+       <script>
+function permitAccess() {
+  document.getElementById('ageModal').style.display = 'none';
+  document.getElementById('cookie-modal').style.display = 'flex';
+}
+
+function denyAccess() {
+  alert("Você precisa ter mais de 18 anos para acessar este site.");
+  window.location.href = "https://www.google.com";
+}
+</script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("cookie-modal");
+  const btn = document.getElementById("accept-cookies");
+
+  btn.addEventListener("click", function () {
+    fetch("/accept", {
+      method: "POST"
+    })
+    .then(response => {
+      if (response.ok) {
+        modal.style.display = "none"; // Esconde o modal
+      } else {
+        console.error("Erro ao salvar o cookie de consentimento.");
+      }
+    })
+    .catch(err => {
+      console.error("Erro na requisição de consentimento:", err);
+    });
+  });
+});
+</script>
+</div>
+</body>
+</html>

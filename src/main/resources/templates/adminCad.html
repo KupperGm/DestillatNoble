@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Admin</title>
+    <link rel="stylesheet" th:href="@{/login.css}"> 
+    <style>
+         button {
+    background-color: #f7e0b6; /* Champagne */
+    color: #000000;            /* Preto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+a{
+    color: #000000;
+    text-decoration: none;
+}
+button:hover {
+    background-color: #f5d9a4; /* Tom um pouco mais escuro de champagne */
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+.login-container{
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="titulo">Registrar Admin</h1>
+
+       <form class="form-login" th:action="@{/registerAdm}" th:object="${admin}" method="post">
+    <div class="fileiras">
+        <label for="nome">Nome:</label>
+        <input type="text" th:field="*{nome}" required>
+        <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" style="color: red;"></span>
+    </div>
+
+    <div class="fileiras">
+        <label for="cpf">CPF:</label>
+        <input type="text" th:field="*{cpf}" required>
+        <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" style="color: red;"></span>
+    </div>
+
+    <div class="fileiras">
+        <label for="email">E-mail:</label>
+        <input type="email" th:field="*{email}" required>
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></span>
+    </div>
+
+    <div class="fileiras">
+        <label for="senha">Senha:</label>
+        <input type="password" th:field="*{senha}" required>
+        <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}" style="color: red;"></span>
+    </div>
+
+    <button type="submit">Registrar</button>
+</form>
+    <br><br>
+    <button><a th:href="@{/indexAdmin}">Voltar</a></button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" th:href="@{/login2.css}">
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="titulo">Cadastro de Usuário</h1>
+
+        <form class="form-login" th:action="@{/registerUsuario}" th:object="${usuario}" th:method="post">
+            <div class="fileiras">
+                <label for="nome">Nome Completo:</label>
+                <input type="text" id="nome" name="nome" th:field="*{nome}" required>
+                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" style="color: red;"></span>
+            </div>
+
+            <div class="fileiras">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" th:field="*{email}" required>
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></span>
+            </div>
+
+            <div class="fileiras">
+                <label for="cpf">Cpf:</label>
+                <input type="text" id="cpf" th:field="*{cpf}" name="cpf">
+                <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" style="color: red;"></span>
+            </div>
+
+            <div class="fileiras">
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" th:field="*{senha}" required>
+                <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}" style="color: red;"></span>
+            </div>
+
+            <div class="fileiras">
+                <label for="nascimento">Insira data de nascimento</label>
+                <input type="date" id="nascimento" name="nascimento"dade th:field="*{nascimento}" required>
+                <span th:if="${#fields.hasErrors('nascimento')}" th:errors="*{nascimento}" style="color: red;"></span>
+            </div>
+
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <div class="register-link">
+            <p>Já possui uma conta?</p><a th:href="@{redirect:/loginform}"></a>
+        </div>
+    </div>
+</body>
+</html>

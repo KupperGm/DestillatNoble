@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{clientes.css}">
+    <title>Document</title>
+    <style>
+         button {
+    background-color: #f7e0b6; /* Champagne */
+    color: #000000;            /* Preto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+a{
+    color: #000000;
+    text-decoration: none;
+}
+button:hover {
+    background-color: #f5d9a4; /* Tom um pouco mais escuro de champagne */
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+    </style>
+</head>
+<body>
+    <div class="cabe">
+        <h1 class="h1">Administradores Desativados no Sistema</h1>
+    </div>
+    <div class="pai">
+        <h2 class="titulo">Tabela de Administradores Desativados</h2>
+
+        <table class="tabela-clientes">
+            <thead>
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Desativação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="admin : ${admins}">
+                    <td th:text="${admin.matricula}"></td>
+                    <td th:text="${admin.nome}"></td>
+                    <td th:text="${admin.email}"></td>
+                    <td th:text="${admin.dataDesativacao != null ? #temporals.format(admin.dataDesativacao, 'dd/MM/yyyy HH:mm') : '---'}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br> <br>
+         <button><a th:href="@{/indexAdmin}">Voltar</a></button>
+</body>
+</html>

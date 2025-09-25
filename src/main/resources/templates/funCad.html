@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Funcionário</title>
+    <link rel="stylesheet" th:href="@{/login.css}">
+    <style>
+         button {
+    background-color: #f7e0b6; /* Champagne */
+    color: #000000;            /* Preto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+a{
+    color: #000000;
+    text-decoration: none;
+}
+button:hover {
+    background-color: #f5d9a4; /* Tom um pouco mais escuro de champagne */
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+.login-container{
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="titulo" th:text="${funcionario != null and funcionario.matricula != null} ? 'Editar Funcionário' : 'Registrar Funcionário'">Registrar Funcionário</h1>
+
+        <form class="form-login"
+              th:action="@{/registerFunc}"
+              th:object="${funcionario}"
+              th:method="post">
+
+            <div class="fileiras">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" th:field="*{nome}" required>
+                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" style="color: red;"></span>
+            </div>
+
+            <div class="fileiras">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" th:field="*{cpf}" required>
+                <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" style="color: red;"></span>
+            </div>
+
+            <div class="fileiras">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" th:field="*{email}" required>
+            </div>
+
+            <div class="fileiras">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" th:field="*{senha}" required>
+            </div>
+
+            <button type="submit">Registrar</button>
+        </form>
+        <br> <br>
+    <button><a th:href="@{/indexAdmin}">Voltar</a></button>
+    </div>
+    
+</body>
+</html>

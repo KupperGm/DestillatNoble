@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login de Funcionários</title>
+    <link rel="stylesheet" th:href="@{/style2.css}">
+</head>
+<body>
+
+    <div class="login-container">
+        <h1 class="titulo">Login de Funcionários e Administradores</h1>
+
+        <form th:action="@{/loginFun}" th:method="POST" class="form-login">
+            <div class="fileiras">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="email" required>
+
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="senha" required>
+
+                <label for="matricula">Matrícula</label>
+                <input type="text" name="matricula" required placeholder="Digite sua matrícula">
+            </div>
+
+            
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <div class="register-link cachaca">
+        </div>
+    </div>
+
+</body>
+</html>

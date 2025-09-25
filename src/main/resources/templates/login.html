@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/login.css}">
+</head>
+<body>
+        <div class="login-container">
+            <form th:action="@{/login}" th:method="POST" class="form-login">
+                <label for="tipo-clogin">Tipo de Login:</label>
+                <select name="tipo" id="tipo-login">
+                    <option value="cliente">CLIENTE</option>
+                    <option value="admin">ADMIN</option>
+                    <option value="funcionario">FUNCIONÁRIO</option>
+                </select>
+                <label for="email">Email:</label>
+                <input type="email" placeholder="email" name="email" required>
+                <br>
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" placeholder="senha" required>
+
+                <div id="matricula-field" class="matricula-field">
+                    <label for="matricula">Matrícula de Funcionário:</label>
+                    <input type="text" id="matricula" name="matricula" placeholder="Digite sua matrícula" required disabled>
+                </div>
+
+                <button type="submit">Entrar</button>
+            </form>
+            <div class="register-link">
+                <p>Não tem uma conta? <a th:href="@{/registerForm}">Registrar</a></p>
+            </div>
+        </div>
+
+        
+</body>
+</html>

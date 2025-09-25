@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Clientes</title>
+    <link rel="stylesheet" th:href="@{/clientes.css}"> 
+    <style>
+         button {
+    background-color: #f7e0b6; /* Champagne */
+    color: #000000;            /* Preto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+a{
+    color: #000000;
+    text-decoration: none;
+}
+button:hover {
+    background-color: #f5d9a4; /* Tom um pouco mais escuro de champagne */
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+    </style>
+</head>
+<body>
+
+    <div class="cabe">
+        <h1 class="h1">Clientes Cadastrados</h1>
+    </div>
+
+    <div class="pai">
+        <h2 class="titulo">Tabela de Clientes</h2>
+
+        <table class="tabela-clientes">
+            <thead>
+                <tr>
+                    <th>CPF</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Data de Nascimento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cliente : ${clientes}">
+                    <td th:text="${cliente.cpf}"></td>
+                    <td th:text="${cliente.nome}"></td>
+                    <td th:text="${cliente.email}"></td>
+                    <td th:text="${cliente.nascimento}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br> <br>
+         <button><a th:href="@{/indexAdmin}">Voltar</a></button>
+    </div>
+
+</body>
+</html>
