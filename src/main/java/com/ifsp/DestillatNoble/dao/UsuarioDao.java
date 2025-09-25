@@ -11,4 +11,5 @@ import com.ifsp.DestillatNoble.model.Usuario;
 public interface UsuarioDao extends JpaRepository<Usuario, String>{
     Optional<Usuario> findByEmail(String email);
     Optional<Usuario> findByCpf(String cpf);
+    
 }

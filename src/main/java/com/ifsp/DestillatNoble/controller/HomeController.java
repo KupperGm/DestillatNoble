@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,11 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ifsp.DestillatNoble.dao.AdminDao;
 import com.ifsp.DestillatNoble.dao.BebidaDao;
+import com.ifsp.DestillatNoble.dao.FormaPagamentoDao;
 import com.ifsp.DestillatNoble.dao.FuncionarioDao;
 import com.ifsp.DestillatNoble.dao.UsuarioDao;
 import com.ifsp.DestillatNoble.model.Admin;
 import com.ifsp.DestillatNoble.model.Bebida;
+import com.ifsp.DestillatNoble.model.FormaPagamento;
 import com.ifsp.DestillatNoble.model.Funcionario;
+import com.ifsp.DestillatNoble.model.Pedido;
 import com.ifsp.DestillatNoble.model.Usuario;
 import com.ifsp.DestillatNoble.service.AdminService;
 import com.ifsp.DestillatNoble.service.FuncionarioService;
@@ -116,6 +121,9 @@ public class HomeController {
 
     @Autowired
     private BebidaDao bebidaDao;
+
+    @Autowired
+    private FormaPagamentoDao formaPagamentodao;
 
     @GetMapping("/home")
     public String home(Model model) {
@@ -343,6 +351,39 @@ public class HomeController {
         model.addAttribute("funcionarios", funcionarioService.listarInativos());
         return "listar-funcionariosOff.html";
     }   
+    @GetMapping("/addFormapagmento")
+    public String addFormapagmento() {
+        return "addFormapagmento.html";
+    }
+    @PostMapping("/formapagamentoAdd")
+    public String formapagamentoAdd(@RequestParam String nome) {
+        FormaPagamento formaPagamento = new FormaPagamento();
+        formaPagamento.setNome(nome);
+        formaPagamentodao.save(formaPagamento);
+        return "redirect:/indexAdmin"; 
+    }
+    @GetMapping("/addPedidos")
+     public String novoPedido(Model model) {
+        model.addAttribute("pedido", new Pedido());
+        model.addAttribute("bebidas", bebidaDao.findAll());
+        model.addAttribute("formasPagamento", formaPagamentodao.findAll());
+        return "pedido-form";
+    }
+    @PostMapping("/salvarPedido")
+    public String salvarPedido(@ModelAttribute Pedido pedido, Principal principal) {
+        // pega o usuário logado
+        Usuario cliente = usuarioDao.findByEmail(principal.getName());
+        pedido.setCliente(cliente);
+
+        // calcula valor total baseado nas bebidas
+        double total = pedido.getBebidas().stream()
+                .mapToDouble(Bebida::getPreco)
+                .sum();
+        pedido.setValorTotal(total);
+
+        pedidoDao.save(pedido);
+        return "redirect:/home";
+    }
 
     /*FIM DE TESTES */
     /*INCIO DO PAINEL DO FUNCIONÁRIO */

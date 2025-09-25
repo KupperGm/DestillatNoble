@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Pedido</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Fazer Pedido</h2>
+
+    <form th:action="@{/salvarPedido}" th:object="${pedido}" method="post">
+
+        <!-- Lista de bebidas -->
+        <label for="bebidas">Escolha as Bebidas:</label>
+        <select id="bebidas" name="bebidas" multiple required>
+            <option th:each="b : ${bebidas}"
+                    th:value="${b.id}"
+                    th:text="${b.nome} + ' - R$ ' + ${b.preco}">
+            </option>
+        </select>
+
+        <!-- Forma de pagamento -->
+        <label for="formaPagamento">Forma de Pagamento:</label>
+        <select id="formaPagamento" name="formaPagamento.id" required>
+            <option th:each="fp : ${formasPagamento}"
+                    th:value="${fp.id}"
+                    th:text="${fp.nome}">
+            </option>
+        </select>
+
+        <button type="submit" class="btn">Confirmar Pedido</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/bebidas.css}">
+</head>
+<body>
+
+    <div class="login-container">
+        <h2 class="titulo">Cadastro de Bebida</h2>
+        <form class="form-login" th:action="@{/formapagamentoAdd}" th:method="post">
+            
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <button type="submit">Salvar Forma de pagamento</button>
+        </form>
+    </div>
+
+
+
+</body>
+</html>
